@@ -1,0 +1,32 @@
+directive @unique on FIELD_DEFINITION
+type User {
+  _id: ID
+  username: String! @unique
+  email: String!
+  password: String!
+  avatar: String
+  joinDate: String
+  favourites: [Post]
+}
+
+type Post {
+  title: String!
+  imageUrl: String!
+  categories: [String]!
+  description: String!
+  createdDate: String
+  likes: Int
+  createdBy: User!
+  messages: [Message]
+}
+
+type Message {
+  _id: ID
+  messageBody: String!
+  messageDate: String
+  messageUser: User!
+}
+
+type Query {
+  post: [Post]
+}
