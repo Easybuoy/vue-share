@@ -10,14 +10,19 @@ const typeDefs = fs.readFileSync(filePath, "utf-8");
 
 const User = require("./models/User");
 const Post = require("./models/Post");
+const resolvers = require("./resolvers");
 
 mongoose
-  .connect(process.env.MONGO_URI, { useNewUrlParser: true,useCreateIndex: true })
+  .connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useCreateIndex: true
+  })
   .then(() => console.log("database connected"))
   .catch(err => console.log(err));
 
 const server = new ApolloServer({
   typeDefs: typeDefs,
+  resolvers,
   context: {
     User,
     Post
