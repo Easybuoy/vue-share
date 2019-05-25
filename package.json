@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "nodemon app.js",
+    "server": "nodemon --exec babel-node app.js",
     "client": "cd client && npm start",
     "dev": "concurrently --names \"server,client\" \"npm run server --silent\" \"npm run client --silent\""
   },
@@ -32,6 +32,10 @@
     "mongoose": "^5.5.9"
   },
   "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/node": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
     "concurrently": "^4.1.0",
     "nodemon": "^1.19.0"
   }
