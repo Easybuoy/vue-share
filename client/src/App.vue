@@ -18,7 +18,7 @@
           tag="span"
           style="cursor: pointer"
         >
-        <h1 class="title pl-3">VueShare</h1>
+          <h1 class="title pl-3">VueShare</h1>
         </router-link>
       </v-toolbar>
 
@@ -26,7 +26,12 @@
 
       <!-- Side Navbar Links -->
       <v-list>
-        <v-list-tile ripple v-for="item in sideNavItems" :key="item.title" :to=" item.link">
+        <v-list-tile
+          ripple
+          v-for="item in sideNavItems"
+          :key="item.title"
+          :to=" item.link"
+        >
           <v-list-tile-action>
             <v-icon>{{item.icon}}</v-icon>
           </v-list-tile-action>
@@ -83,7 +88,10 @@
     </v-toolbar>
     <main>
       <v-container class="mt-4">
-        <router-view />
+        <transition name="fade">
+          <router-view />
+
+        </transition>
       </v-container>
 
     </main>
@@ -145,3 +153,21 @@ export default {
   }
 };
 </script>
+
+<style>
+  .fade-enter-active,
+  .fade-leave-active {
+    transition-property: opacity;
+    transition-duration: 0.25s;
+  }
+
+  .fade-enter-active {
+    transition-delay: 0.25s;
+  }
+
+
+   .fade-enter,
+   .fade-leave-active {
+     opacity: 0;
+   }
+</style>
