@@ -1,15 +1,13 @@
 <template>
-  <v-container
-    text-xs-center
-    v-if="getPosts"
-  >
+  <v-container text-xs-center>
     <v-flex xs12>
       <v-carousel
+        v-if="posts.length > 0"
         v-bind="{'cycle': true}"
         interval="3000"
       >
         <v-carousel-item
-          v-for="post in getPosts"
+          v-for="post in posts"
           :key="post._id"
           :src="post.imageUrl"
         >
@@ -25,34 +23,17 @@ import { gql } from "apollo-boost";
 
 export default {
   name: "home",
-  // data() {
-  //   return {
-  //     getPostsQuery: gql`
-  //       query {
-  //         getPosts {
-  //           _id
-  //           title
-  //           description
-  //           imageUrl
-  //           description
-  //         }
-  //       }
-  //     `
-  //   };
-  // }
-  apollo: {
-    getPosts: {
-      query: gql`
-        query {
-          getPosts {
-            _id
-            title
-            description
-            imageUrl
-            description
-          }
-        }
-      `
+  created() {
+    this.handleGetCarouselPosts();
+  },
+  computed: {
+    posts() {
+      return this.$store.getters.posts;
+    }
+  },
+  methods: {
+    handleGetCarouselPosts() {
+      this.$store.dispatch("getPosts");
     }
   }
 };
