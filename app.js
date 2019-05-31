@@ -1,32 +1,32 @@
-import { ApolloServer } from "apollo-server";
-import mongoose from "mongoose";
-import fs from "fs";
-import path from "path";
-import dotenv from "dotenv";
+import { ApolloServer } from 'apollo-server';
+import mongoose from 'mongoose';
+import fs from 'fs';
+import path from 'path';
+import dotenv from 'dotenv';
 
-import User from "./models/User";
-import Post from "./models/Post";
-import resolvers from "./resolvers";
+import User from './models/User';
+import Post from './models/Post';
+import resolvers from './resolvers';
 
 dotenv.config();
-const filePath = path.join(__dirname, "typeDefs.gql");
-const typeDefs = fs.readFileSync(filePath, "utf-8");
+const filePath = path.join(__dirname, 'typeDefs.gql');
+const typeDefs = fs.readFileSync(filePath, 'utf-8');
 
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
-    useCreateIndex: true
+    useCreateIndex: true,
   })
-  .then(() => console.log("database connected"))
+  .then(() => console.log('database connected'))
   .catch(err => console.log(err));
 
 const server = new ApolloServer({
-  typeDefs: typeDefs,
+  typeDefs,
   resolvers,
   context: {
     User,
-    Post
-  }
+    Post,
+  },
 });
 
 server.listen().then(({ port }) => {
