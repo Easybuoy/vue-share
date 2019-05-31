@@ -29,6 +29,6 @@ const server = new ApolloServer({
   },
 });
 
-server.listen().then(({ port }) => {
+server.listen(3000).then(({ port }) => {
   console.log(`Server listening on port ${port}`);
 });

@@ -1,43 +1,69 @@
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const createToken = (user, secret, expiresIn) => {
+  const { username, email } = user;
+  return jwt.sign({ username, email }, secret, { expiresIn });
+};
+
 export default {
   Query: {
     getPosts: async (_, args, { Post }) => {
       const posts = await Post.find({})
-        .sort({ createdDate: "desc" })
+        .sort({ createdDate: 'desc' })
         .populate({
-          path: "createdBy",
-          model: "User"
+          path: 'createdBy',
+          model: 'User',
         });
       return posts;
-    }
+    },
   },
   Mutation: {
+    signInUser: async (_, { username, password }, { User }) => {
+      const user = await User.findOne({ username });
+      if (!user) {
+        throw new Error('User not found');
+      }
+
+      const isValidPassword = await bcrypt.compare(password, user.password);
+      if (!isValidPassword) {
+        throw new Error('Invalid Password');
+      }
+
+      return { token: createToken(user, process.env.SECRET, '1hr') };
+    },
     signUpUser: async (_, { username, email, password }, { User }) => {
       const user = await User.findOne({ username });
       if (user) {
-        throw new Error("User already exists");
+        throw new Error('User already exists');
       }
 
       const newUser = await new User({
         username,
         email,
-        password
+        password,
       }).save();
-      return newUser;
+      return { token: createToken(newUser, process.env.SECRET, '1hr') };
     },
 
     addPost: async (
       _,
-      { title, imageUrl, categories, description, creatorId },
-      { Post }
+      {
+ title, imageUrl, categories, description, creatorId 
+},
+      { Post },
     ) => {
       const newPost = await new Post({
         title,
         imageUrl,
         categories,
         description,
-        createdBy: creatorId
+        createdBy: creatorId,
       }).save();
       return newPost;
-    }
-  }
+    },
+  },
 };
