@@ -25,7 +25,7 @@
   "homepage": "https://github.com/Easybuoy/vue-share#readme",
   "dependencies": {
     "apollo-server": "^2.5.0",
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "dotenv": "^8.0.0",
     "graphql": "^14.3.0",
     "jsonwebtoken": "^8.5.1",
